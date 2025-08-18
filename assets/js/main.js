@@ -33,7 +33,7 @@ $('#contact-form').on('submit', function(e) {
         } else {
           alert("There was an error. Please try again.");
         }
-      }, 1000); // FORM SUCCESS LOADER TIME (1 second here)
+      }, 1); // FORM SUCCESS LOADER TIME (1 second here)
     },
     error: function() {
       // Hide loader a bit later on error
