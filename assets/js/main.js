@@ -2,19 +2,21 @@
   { "use strict"
   
 /* 1. Proloder */
- $(window).on('load', function () {
+/* 1. Page Preloader */
+$(window).on('load', function () {
   setTimeout(function() {
     $('#preloader-active').fadeOut('slow');
     $('body').css({
       'overflow': 'visible'
     });
-  }, 2000); // 3000ms = 3 seconds, change as needed
+  }, 2000); // PAGE PRELOADER TIME (2 seconds here)
 });
 
-// Show loader on form submit
+/* 2. Show loader on form submit */
 $('#contact-form').on('submit', function(e) {
   e.preventDefault();
-  $('#preloader-active').fadeIn('fast'); // Show loader
+  $('#preloader-active').fadeIn('fast'); // Show loader immediately
+
   var $form = $(this);
   $.ajax({
     url: $form.attr('action'),
@@ -22,21 +24,26 @@ $('#contact-form').on('submit', function(e) {
     data: $form.serialize(),
     dataType: 'json',
     success: function(result) {
-      $('#preloader-active').fadeOut('slow'); // Hide loader
-      if(result.result === "success") {
-        alert("Your message has been saved for the couple. Thank you!");
-        $form[0].reset();
-      } else {
-        alert("There was an error. Please try again.");
-      }
+      // Keep loader for a short time after success
+      setTimeout(function() {
+        $('#preloader-active').fadeOut('slow');
+        if(result.result === "success") {
+          alert("Your message has been saved for the couple. Thank you!");
+          $form[0].reset();
+        } else {
+          alert("There was an error. Please try again.");
+        }
+      }, 1000); // FORM SUCCESS LOADER TIME (1 second here)
     },
     error: function() {
-      $('#preloader-active').fadeOut('slow'); // Hide loader
-      alert("There was an error. Please try again.");
+      // Hide loader a bit later on error
+      setTimeout(function() {
+        $('#preloader-active').fadeOut('slow');
+        alert("There was an error. Please try again.");
+      }, 500); // FORM ERROR LOADER TIME (0.5 sec here)
     }
   });
 });
-
 
 
 
